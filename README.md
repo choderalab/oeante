@@ -3,7 +3,7 @@ oeante
 
 Antechamber (AMBER GAFF parameterization engine) implementation using OpenEye tools
 
-Original code by Richard Dixon, released as GPLv2.
+Original code by Richard Dixon, released as GPLv2: https://simtk.org/home/oeante
 
 # Introduction
 
