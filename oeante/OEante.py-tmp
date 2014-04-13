@@ -368,34 +368,26 @@ def fixUnknown(mol):
             atom.SetType(newType)
 
     return(unkCount)
-    
-def main():
 
-    """ Command line parsing information """
-    desc = "Set GAFF atom types via SMARTS pattern matching"
-    vers = "OEante v0.2 - 11/2010, Richard Dixon, Vertex"
-    use = "%prog [options] FILE.[smi,sdf,mol2]"
-    parser = OptionParser(description=desc, version=vers, usage=use)
+def oeante(input_filename, typefile='gaffsmarts.txt', nocharges=False, debug=False, mol2file='look.mol2'):
+    """
+    Parse the specified input file (smi, sdf, mol2) for molecules to parameterize.
 
-    parser.add_option("-t", "--typefile", action="store", dest="typefile",
-                      default="gaffsmarts.txt",
-                      help="input atom type data file in format \
-                      SMARTS Name [default: %default]")
-    parser.add_option("-n", "--nocharges", action="store_true", dest="nocharges",
-                      default=False,
-                      help="Turn off charge calculation [default: %default]")
-    parser.add_option("-d", "--debug", action="store_true", dest="debug",
-                      default=False,
-                      help="Turn on debug printing [default: %default]")
-    parser.add_option("-m", "--mol2file", action="store", dest="mol2file",
-                      default="look.mol2",
-                      help="output mol2 format file for visualization \
-                      and input to OEparmchk [default: %default]")
+    Parameters
+    ----------
+    input_filename : string
+        An OpenEye-readable file (e.g. smi, sdf, mol2) containing one or more molecules to parse.
+    typefile : string, optional, default='gaffsmarts.txt'
+        Text file containing SMARTS definitions and corresponding GAFF atom types.
+    nocharges : bool, optional, default=False
+        If False, no charges will be created.
+    debug : bool, optional, default=False
+        If True, debug output will be printed.
+    mol2file : string, optional, default='look.mol2'
+        Output file?
 
-    (options, args) = parser.parse_args()
+    """
 
-    if(len(args) != 1):
-        parser.error("incorrect number of arguments")
 
     Smarts = {}
     ft = open(options.typefile, 'r')
@@ -410,7 +402,7 @@ def main():
         SList.append(k)
     matcher = Matcher(SList)
 
-    ifs = oemolistream(args[0])
+    ifs = oemolistream(input_filename)
     ofs = oemolostream()
     ofs.open(options.mol2file)
 
@@ -418,7 +410,6 @@ def main():
     omega.SetMaxConfs(1)
 
     for molIndex,mol in enumerate(ifs.GetOEMols()):
-        
         OEAssignAromaticFlags(mol, OEAroModelTripos)
         OEAssignHybridization(mol)
         OEAddExplicitHydrogens(mol,False,True)
@@ -432,7 +423,7 @@ def main():
                 log = oeostream()
                 OEThrow.SetOutputStream(log)
                 quiet= omega(mol)
-                
+
             OEAssignPartialCharges(mol,OECharges_AM1BCC)
 
         matchList = matcher.match(mol)
@@ -490,7 +481,7 @@ def main():
                             elif (atom.GetType() == "p2" or atom.GetType() == "pe") \
                                      and Smarts[smarts] == "pb":
                                 atom.SetType("pc")
-        
+
         """ Fix cc/ce inconsistency """
         for atom in mol.GetAtoms():
             if atom.GetType() == "cc" and not atom.IsAromatic():
@@ -507,7 +498,7 @@ def main():
         """ Enumerate combinations of equivalent atom types and select set that obeys rules """
         combTypes(mol)
 
-        """ Save output for viewing and OEparmchk.  Prepend _ to type names 
+        """ Save output for viewing and OEparmchk.  Prepend _ to type names
         to avoid ca == calcium problem """
 
         for atom in mol.GetAtoms():
@@ -516,6 +507,38 @@ def main():
             atom.SetType(tNew)
 
         OEWriteMol2File(ofs,mol,True)
+
+    return
+
+def main():
+
+    """ Command line parsing information """
+    desc = "Set GAFF atom types via SMARTS pattern matching"
+    vers = "OEante v0.2 - 11/2010, Richard Dixon, Vertex"
+    use = "%prog [options] FILE.[smi,sdf,mol2]"
+    parser = OptionParser(description=desc, version=vers, usage=use)
+
+    parser.add_option("-t", "--typefile", action="store", dest="typefile",
+                      default="gaffsmarts.txt",
+                      help="input atom type data file in format \
+                      SMARTS Name [default: %default]")
+    parser.add_option("-n", "--nocharges", action="store_true", dest="nocharges",
+                      default=False,
+                      help="Turn off charge calculation [default: %default]")
+    parser.add_option("-d", "--debug", action="store_true", dest="debug",
+                      default=False,
+                      help="Turn on debug printing [default: %default]")
+    parser.add_option("-m", "--mol2file", action="store", dest="mol2file",
+                      default="look.mol2",
+                      help="output mol2 format file for visualization \
+                      and input to OEparmchk [default: %default]")
+
+    (options, args) = parser.parse_args()
+
+    if(len(args) != 1):
+        parser.error("incorrect number of arguments")
+
+    oeante(args[0], options.typefile, options.nocharges, options.debug, options.mol2file)
 
 if __name__ == "__main__":
     main()
