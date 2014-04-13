@@ -1,0 +1,74 @@
+""" Gaffsmarts.txt
+""" SMARTS patterns defining gaff atom types, part of:
+"""
+""" OEante:  AMBER force field and program atom-typing and
+""" parameter generation.  Richard Dixon, Vertex Pharma
+"""
+""" Copyright (2010) Vertex Pharma.
+"""    This software is distributed under the terms of the
+"""    GNU General Public License
+"""
+[C;$(C=[O,S])] c
+[C;$(C#[N,C,P]);!$(*a);!$(*[CX3]);!$(*[NX2]);!$(*[PX4])] c1
+[C;$(C#[N,C,P]);$(*a),$(*[CX3]),$(*[NX2]),$(*[PX4])] cg
+[CX3;!$(C=[O,S]);!$(*a);!$(*[CX3]);!$(*[NX2]);!$(*[PX4]);!$(*A#A)] c2
+[CX3;$(*a);!$(*[CX3]);!$(C=[O,S])] cc
+[CX3;$(*a);$(*[CX3]);!$(C=[O,S])] cc
+[CX3;!$(*a);$(*[CX3]),$(*[NX2]),$(*[PX4]),$(*A#A);!$(C=[O,S])] ce
+[CX4] c3
+[c;!$(c-a)] ca
+[c;$(c-a)] cp
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([C,c,#1,P,p;+0])[C,c,#1,P,p;+0])] hc
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([C,c,#1,P,p;+0])[!C;!c;!#1;!P;!p;+0])] h1
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([C,c,#1,P,p;+0])[!C;!c;!#1;!P;!p;-1])] h1
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([!C;!c;!#1;!P;!p;+0])[!C;!c;!#1;!P;!p;+0])] h2
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([!C;!c;!#1;!P;!p;-1])[!C;!c;!#1;!P;!p;+0])] h2
+[#1;$(*[CX4]([C,c,#1,P,p;+0])([!C;!c;!#1;!P;!p;-1])[!C;!c;!#1;!P;!p;-1])] h2
+[#1;$(*[CX4]([!C;!c;!#1;!P;!p;+0])([!C;!c;!#1;!P;!p;+0])[!C;!c;!#1;!P;!p;+0])] h3
+[#1;$(*[CX4]([!C;!c;!#1;!P;!p;-1])([!C;!c;!#1;!P;!p;+0])[!C;!c;!#1;!P;!p;+0])] h3
+[#1;$(*[CX4]([!C;!c;!#1;!P;!p;-1])([!C;!c;!#1;!P;!p;-1])[!C;!c;!#1;!P;!p;+0])] h3
+[#1;$(*[CX4]([!C;!c;!#1;!P;!p;-1])([!C;!c;!#1;!P;!p;-1])[!C;!c;!#1;!P;!p;-1])] h3
+[#1;$(*[cX3](~[C,c,#1,P,p])~[C,c,#1,P,p])] ha
+[#1;$(*[CX3](~[C,c,#1,P,p])~[C,c,#1,P,p])] ha
+[#1;$(*[CX3,cX3](~[C,c,#1,P,p])~[!C;!c;!#1;!P;!p])] h4
+[#1;$(*[CX3,cX3](~[!C;!c;!#1;!P;!p])~[!C;!c;!#1;!P;!p])] h5
+[#1;$(*[N,n])] hn
+[#1;$(*[O;H1])] ho
+[#1;$(*[O;H2])] hw
+[#1;$(*[P,p])] hp
+[#1;$(*S)] hs
+[#1;$(*[C,c][A,a;+1])] hx
+[F] f
+[Cl] cl
+[Br] br
+[I] i
+[N,n;$(*[C,c,S]=[O,S]);!$(*=[A,a])] n
+[N;$(*#A)] n1
+[NX2;!$(*a);!$(*[CX3]);!$(*[NX2]);!$(*[PX4])] n2
+[NX2;$(*a),$(*[CX3]),$(*[NX2]),$(*[PX4])] ne
+[NX3;!$(*a);!$(*A=A),$(*P=O)] n3
+[NX4] n4
+[nX3;!$(*[C,c]=[O,S])] na
+[nX2;!$(*[C,c]=[O,S])] nb
+[NX3;$(*a),$(*A=A);!$(*[P,S]=O);!$(*C=[O,S]);!$(*(~[O,o])~[O,o])] nh
+[N,n;$(*(~[O,o])~[O,o])] no
+[OX1] o
+[OX2;H1] oh
+[OX2;H0] os
+[OX2;H2] ow
+[PX2;!$(*c);!$(*[A,a]=[A,a]);!$(*A#A)] p2
+[PX2;$(*c),$(*[A,a]=[A,a]),$(*A#A)] pe
+[PX3;v3] p3
+[PX3;v4;!$(*c);!$(*[A,a]=[A,a]);!$(*A#A)] p4
+[PX3;v4,v5;$(*c),$(*[A,a]=[A,a]),$(*A#A)] px
+[PX4;v5;!$(*c);!$(*[A,a]=[A,a]);!$(*A#A)] p5
+[PX4;+1] p5
+[PX5] p5
+[PX4;v5;$(*c),$(*[A,a]=[A,a]),$(*A#A)] py
+[p] pb
+[SX1] s
+[SX2;$(*=A)] s2
+[SX3] s4
+[SX4] s6
+[SX2;H1;!$(*=A)] sh
+[SX2;H0;!$(*=A)] ss
