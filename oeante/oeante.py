@@ -54,7 +54,7 @@ class Matcher:
         matchList = []
         for smarts,pat in self.patList:
             hitList = []
-            for match in pat.Match(mol,1):
+            for match in pat.Match(mol,True):
                 hitSet = set()
                 for matchpair in match.GetAtoms():
                     hitSet.add(matchpair.target.GetIdx())
@@ -369,7 +369,7 @@ def fixUnknown(mol):
 
     return(unkCount)
 
-def oeante(input_filename, typefile='gaffsmarts.txt', nocharges=False, debug=False, mol2file='look.mol2'):
+def oeante(input_filename, options):
     """
     Parse the specified input file (smi, sdf, mol2) for molecules to parameterize.
 
@@ -538,7 +538,7 @@ def main():
     if(len(args) != 1):
         parser.error("incorrect number of arguments")
 
-    oeante(args[0], options.typefile, options.nocharges, options.debug, options.mol2file)
+    oeante(args[0], options)
 
 if __name__ == "__main__":
     main()
